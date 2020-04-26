@@ -1,0 +1,234 @@
+openapi: 3.0.0
+info:
+  description: API para black list de Clientes
+  version: "1.0.0"
+  title: Black List Cliente API
+  contact:
+    email: vqmonteiro@hotmail.com
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+
+servers:
+  - url: /v1
+paths:
+  /cliente:
+    post:
+      operationId: postCliente
+      summary: Realiza a criação de um cliente
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClienteRequest'
+      responses:
+        201:
+          $ref: '#/components/responses/Criado'
+        400:
+          description: '#components/responses/ErroEnvio'
+        500:
+          $ref: '#/components/responses/ErroGenerico'
+
+  /cliente/{cnpj}:
+    parameters:
+      - in: path
+        name: cnpj
+        schema:
+          type: integer
+          format: int32
+        required: true
+        example: 12345678901
+        description: cnpj do cliente
+    get:
+      operationId: getCliente
+      summary: Pegar um cliente
+      responses:
+        200:
+          $ref: '#/components/responses/Ok'
+        404:
+          $ref: '#/components/responses/NotFound'
+        500:
+          $ref: '#/components/responses/ErroGenerico'
+    put:
+      operationId: putCliente
+      summary: Alterar um cliente ja existente
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClienteRequestDTO'
+      responses:
+        202:
+          $ref: '#/components/responses/Aceito'
+        404:
+          $ref: '#/components/responses/NotFound'
+        500:
+          $ref: '#/components/responses/ErroGenerico'
+    delete:
+      operationId: deleteCliente
+      summary: deletar um cliente
+      responses:
+        204:
+          $ref: '#/components/responses/SemConteudo'
+        404:
+          $ref: '#/components/responses/NotFound'
+        500:
+          $ref: '#/components/responses/ErroGenerico'
+
+components:
+  responses:
+    Ok:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ClienteResponse'
+    OkList:
+      description: retorno da lista
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ClienteResponseList'
+    Criado:
+      description: Criado com sucesso
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ClienteResponse'
+    Aceito:
+      description: Aceito
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ClienteResponse'
+    SemConteudo:
+      description: Recurso deletado
+    NotFound:
+      description: cliente não encontrado
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiErro'
+    ErroEnvio:
+      description: Erro de envio de cliente
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiErro'
+    ErroGenerico:
+      description: Erro Interno do servidor
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiErro'
+
+  schemas:
+    ClienteResponse:
+      type: object
+      description: objeto que representa um cliente
+      required:
+        - nome
+        - dataNascimento
+        - profissao
+        - cnpj
+        - email
+      properties:
+        nome:
+          type: string
+          example: Vinicius Monteiro
+        dataNascimento:
+          type: string
+          format: full-date
+          example: 2020-02-21
+        profissao:
+          type: string
+          example: Analista de Sistemas
+        cnpj:
+          type: integer
+          format: int32
+          example: 1234567890
+        email:
+          type: string
+          format: email
+          example: adm@gmail.com
+    ClienteRequest:
+      type: object
+      description: objeto que representa um cliente
+      required:
+        - nome
+        - dataNascimento
+        - profissao
+        - cnpj
+        - email
+      properties:
+        nome:
+          type: string
+          example: Vinicius Monteiro
+        dataNascimento:
+          type: string
+          format: full-date
+          example: 2020-02-21
+        profissao:
+          type: string
+          example: Analista de Sistemas
+        cnpj:
+          type: integer
+          format: int32
+          example: 1234567890
+        email:
+          type: string
+          format: email
+          example: teste@gmail.com
+    ClienteRequestDTO:
+      type: object
+      description: objeto que representa um cliente
+      required:
+        - nome
+        - dataNascimento
+        - profissao
+        - email
+      properties:
+        nome:
+          type: string
+          example: Vinicius Monteiro
+        dataNascimento:
+          type: string
+          format: full-date
+          example: 2020-02-21
+        profissao:
+          type: string
+          example: Analista de Sistemas
+        email:
+          type: string
+          format: email
+          example: teste@gmail.com
+    ClienteResponseList:
+      type: array
+      items:
+        $ref: '#/components/schemas/ClienteResponse'
+    ApiErro:
+      type: object
+      properties:
+        mensagem:
+          type: string
+          description: Tipo da mensagem de erro
+        erros:
+          type: array
+          items:
+            $ref: '#/components/schemas/Erro'
+          description: Lista de erros
+      required:
+        - mensagem
+        - erros
+    Erro:
+      type: object
+      properties:
+        codigo:
+          type: string
+          description: Código do erro
+        mensagem:
+          type: string
+          description: Mensagem de erro
+      required:
+        - codigo
+        - mensagem

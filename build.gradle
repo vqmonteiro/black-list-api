@@ -1,0 +1,78 @@
+plugins {
+    id "com.bmuschko.nexus" version "${nexusVersion}"
+    id "io.spring.dependency-management" version "${dependencyManagementVersion}"
+    id "org.jetbrains.kotlin.jvm" version "${kotlinVersion}"
+    id "org.jetbrains.kotlin.plugin.spring" version "${kotlinVersion}"
+    id "org.openapi.generator" version "${openApiGeneratorVersion}"
+    id "org.springframework.boot" version "${springBootVersion}"
+    id 'jacoco'
+    id 'maven-publish'
+}
+
+// Separando dependencias para outro arquivo.
+apply from: 'dependencies.gradle'
+
+repositories {
+    mavenCentral()
+}
+
+jacoco {
+    toolVersion = "0.8.5"
+}
+
+jacocoTestReport {
+    reports {
+        xml.enabled true
+    }
+}
+
+compileKotlin {
+    dependsOn ':openApiGenerate'
+    kotlinOptions {
+        jvmTarget = jvm
+    }
+}
+
+compileTestKotlin {
+    dependsOn ':openApiGenerate'
+    kotlinOptions {
+        jvmTarget = jvm
+    }
+}
+
+test {
+    useJUnitPlatform()
+    ignoreFailures = false
+}
+
+sourceSets {
+    test {
+        java {
+            srcDirs = ['src/test']
+        }
+    }
+
+    main {
+        java {
+            srcDirs = ['build/generated/src/main/java']
+        }
+    }
+}
+
+openApiGenerate {
+    apiPackage    = generateApiPackage
+    generatorName = apiGeneratorName
+    inputSpec     = "${rootDir}/src/main/resources/swagger/api.yml"
+    modelPackage  = generateModelPackage
+    outputDir     = "${buildDir}/generated"
+    configOptions = [
+        delegatePattern: 'true',
+        dateLibrary : 'java8'
+    ]
+
+    systemProperties = [
+            apis: "",
+            supportingFiles: "ApiUtil.java",
+            models: ""
+    ]
+}

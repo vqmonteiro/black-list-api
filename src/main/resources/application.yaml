@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: cliente
+  data:
+    mongodb:
+      uri: mongodb+srv://test:test@cluster0-nduc5.mongodb.net/cliente_black_list?retryWrites=true&w=majority

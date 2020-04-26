@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: cliente
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/test?keepAlive=true&poolSize=30&autoReconnect=true&socketTimeoutMS=360000&connectTimeoutMS=360000

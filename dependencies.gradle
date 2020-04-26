@@ -1,0 +1,34 @@
+def jacksonVersion        = '2.10.0'
+def lombokVersion         = '1.18.10'
+def mockkVersion          = '1.9.1'
+def mongockVersion        = '2.0.0'
+def nullableVersion       = '0.2.0'
+def springFoxVersion      = '2.9.2'
+def springMockkVersion    = '1.1.3'
+def swaggerVersion        = '1.6.0'
+def testContainersVersion = '1.12.5'
+
+dependencies {
+    compileOnly "org.projectlombok:lombok:${lombokVersion}"
+    implementation "com.fasterxml.jackson.datatype:jackson-datatype-hibernate5:${jacksonVersion}"
+    implementation "com.fasterxml.jackson.datatype:jackson-datatype-hppc:${jacksonVersion}"
+    implementation "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:${jacksonVersion}"
+    implementation "com.fasterxml.jackson.module:jackson-module-afterburner:${jacksonVersion}"
+    implementation "com.fasterxml.jackson.module:jackson-module-kotlin:${jacksonVersion}"
+    implementation "com.github.cloudyrock.mongock:mongock-spring:${mongockVersion}"
+    implementation "io.springfox:springfox-bean-validators:${springFoxVersion}"
+    implementation "io.springfox:springfox-swagger-ui:${springFoxVersion}"
+    implementation "io.springfox:springfox-swagger2:${springFoxVersion}"
+    implementation "io.swagger:swagger-annotations:${swaggerVersion}"
+    implementation "io.swagger:swagger-models:${swaggerVersion}"
+    implementation "org.jetbrains.kotlin:kotlin-reflect:${kotlinVersion}"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlinVersion}"
+    implementation "org.openapitools:jackson-databind-nullable:${nullableVersion}"
+    implementation "org.springframework.boot:spring-boot-starter-data-mongodb:${springBootVersion}"
+    implementation "org.springframework.boot:spring-boot-starter-web:${springBootVersion}"
+    testImplementation "com.ninja-squad:springmockk:${springMockkVersion}"
+    testImplementation "io.mockk:mockk:${mockkVersion}"
+    testImplementation "org.springframework.boot:spring-boot-starter-test:${springBootVersion}"
+    testImplementation "org.testcontainers:junit-jupiter:${testContainersVersion}"
+    testImplementation "org.testcontainers:testcontainers:${testContainersVersion}"
+}
